@@ -1,0 +1,5 @@
+Summary of Nyra's Architecture (Saved 2026-03-19):
+- Core: Nyra is a CodeAgent powered by Qwen2.5-Coder:7b.
+- Tools: Access to DuckDuckGoSearch and local search_archives (RAG).
+- Memory Integration: Designed to bridge Smolagents with LlamaIndex storage.
+- Role: Technical worker agent focused on execution and documentation.
