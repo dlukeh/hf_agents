@@ -1,5 +1,6 @@
 from smolagents import CodeAgent, DuckDuckGoSearchTool, LiteLLMModel, Tool
 from tools.memory_tool import search_archives
+from tools.log_tool import mission_logger
 
 # 1. Setup the Models First (The Engine)
 # Using 'ollama_chat' for LiteLLM to ensure it uses the correct API format
@@ -53,34 +54,28 @@ print(nyra_worker(task="..."))
 
 # 4. Initialize Alfred
 alfred = CodeAgent(
-    tools=[NyraTool(model=nyra_model)],
+    tools=[NyraTool(model=nyra_model), mission_logger],  # Added logger here
     model=alfred_model,
-    max_steps=3,
+    max_steps=5,  # Slightly more steps to allow for logging
     verbosity_level=1,
 )
 
 # Hardened Injection: explicitly forbidding markdown code blocks
 alfred.prompt_templates[
     "system_prompt"
-] = """You are Alfred, the Master of the Batcave. 
-Your only objective is to manage Nyra. You communicate ONLY via <code></code> blocks.
-DO NOT use markdown backticks (```). 
+] = """You are Alfred, the Master of the Batcave.
+RULES:
+1. NEVER "simulate" or "fabricate" data. 
+2. If you need to know what is in a file, you MUST use a tool to read it.
+3. If you need web data, you MUST call a search tool.
+4. Your `final_answer` must only contain data retrieved during the `Thought` steps.
+5. If a tool fails, report the error; do not make up a success.
 
-If you use markdown backticks, the system will fail.
-Example of the ONLY correct format:
-Thought: I must call the worker.
-<code>
-print(nyra_worker(task="Search archives for Nyra architecture"))
-</code>
-
-Stay focused on local data. When you have the final answer, use:
-<code>
-final_answer("The architecture is...")
-</code>
+ALWAYS use <code> blocks for actions.
 """
 
 if __name__ == "__main__":
-    mission = "Search local archives for 'Summary of Nyra Architecture' and explain how her memory integrates with smolagents."
+    mission = "Read the mission history log, summarize our progress so far, and then search the web for the latest updates on 'Smolagents' to see if there are any new features we should add to Nyra."
     print(f"--- Batcave Initializing ---")
     # We use .run() to start the cycle
     print(alfred.run(mission))
