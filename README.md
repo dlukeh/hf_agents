@@ -63,7 +63,7 @@ Together, they form a complete picture of my AI engineering practice.
 The repository follows a clean, modular layout:
 
 ```text
-hf_agents/
+
 ├── alfred
 │   ├── alfred_agent.py
 │   ├── batcave_logs
