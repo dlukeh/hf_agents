@@ -1,10 +1,43 @@
-# 🤖 HF Agents Workspace  
-**Project:** hf_agents  
-**Frameworks:** smolagents, LiteLLMModel  
-**Focus:** Tool‑using agents, code execution, and Hugging Face’s agent architecture  
+🤖 HF Agents Workspace: The Batcave
 
-This repository contains my full workspace for the Hugging Face Agents Course — including Alfred, my smolagents‑powered agent, along with exercises, experiments, and notebooks that explore tool calling, agent loops, and code‑interpreter workflows.
+Project: hf_agents
 
+Frameworks: smolagents, LiteLLM, LlamaIndex
+
+Core Agents: Alfred (Orchestrator) & Nyra (Technical Specialist)
+
+---
+🌌 Project Overview
+
+This repository serves as my primary development environment for the Hugging Face AI Agents Course. It features a local-first architecture designed to explore:
+
+    Tool-Calling Loops: High-precision code execution and task delegation.
+
+    Multi-Agent Systems: Supervisor/Worker patterns using Gemma 3 and Qwen 2.5.
+
+    Local RAG: Private document indexing and retrieval via LlamaIndex.
+---
+
+---
+
+⚡ The Beast: Local Compute Environment
+
+All agent inference and code execution are performed locally on The Beast, an HP Omen 35L optimized for Large Language Model (LLM) workloads.
+
+| Component | Specification | AI Impact |
+| :--- | :--- | :--- |
+| Processor | Intel i7-14700F (20 Cores) | Rapid pre-processing and script execution. |
+| GPU | NVIDIA RTX 4070 Super (12GB) | Local 4-bit/8-bit quantization support. |
+| RAM | 64GB DDR5 | High-capacity context window and RAG. |
+
+📈 Performance Benchmarks
+
+    Stable VRAM Ceiling: ~10.1 GB (Alfred + Nyra + Vector Store).
+
+    Quantization: Optimized for GGUF and EXL2 formats via Ollama and LiteLLM.
+
+    Inference Speed: Average 40-60 tokens/sec on 7B-12B parameter models.
+---
 ---
 
 ## 🚀 Purpose
@@ -31,7 +64,10 @@ The repository follows a clean, modular layout:
 
 ```text
 hf_agents/
+<<<<<<< HEAD
 │
+=======
+>>>>>>> 2aadeba (docs: finalized README with hardware specs and project taxonomy)
 ├── alfred
 │   ├── alfred_agent.py
 │   ├── batcave_logs
