@@ -1,1 +1,23 @@
-alfred/storage/
+# --- Python Environment ---
+venv/
+.env
+__pycache__/
+*.pyc
+
+# --- Alfred's Local "Brain" (Large Index Files) ---
+# We don't want to push the 50MB+ vector stores to GitHub
+alfred/storage/*.json
+
+# --- Telemetry & Logs ---
+# Keep your GPU stats and temporary intrusion reports local
+alfred/batcave_logs/gpu_telemetry.csv
+alfred/batcave_logs/batcave_intrusion_report.txt
+
+# --- Large Models ---
+# If you ever download model weights into this folder
+alfred/models/
+
+# --- OS Specific ---
+.DS_Store
+.vscode/
+.idea/alfred/storage/

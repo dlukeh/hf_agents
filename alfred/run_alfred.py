@@ -1,9 +1,9 @@
-from smolagents import CodeAgent, DuckDuckGoSearchTool, LiteLLMModel, Tool
+from smolagents import CodeAgent, LiteLLMModel, Tool
 from tools.memory_tool import search_archives
 from tools.log_tool import mission_logger
+from tools.reader_tool import file_reader
 
-# 1. Setup the Models First (The Engine)
-# Using 'ollama_chat' for LiteLLM to ensure it uses the correct API format
+# 1. Setup the Models
 alfred_model = LiteLLMModel(
     model_id="ollama_chat/gemma3:12b", api_base="http://localhost:11434"
 )
@@ -26,56 +26,53 @@ class NyraTool(Tool):
 
     def __init__(self, model):
         super().__init__()
-        # Nyra is a CodeAgent who uses your search_archives RAG tool
         self.worker = CodeAgent(tools=[search_archives], model=model, max_steps=3)
 
     def forward(self, task: str) -> str:
         try:
             return self.worker.run(task)
         except Exception as e:
-            return f"Nyra error: {str(e)}. Check if the RAG index is initialized."
+            return f"Nyra error: {str(e)}"
 
 
-# 3. Alfred's "No-Nonsense" Manager Prompt
-alfred_custom_prompt = """You are Alfred. You are a computer program that ONLY outputs code.
-DO NOT use backticks (```). ONLY use <code> tags.
-
-CORRECT EXAMPLE:
-Thought: I need to check the archives.
-<code>
-print(nyra_worker(task="Search local archives for 'Summary of Nyra Architecture'"))
-</code>
-
-INCORRECT EXAMPLE (DO NOT DO THIS):
-Thought: I will search now.
-```python
-print(nyra_worker(task="..."))
-"""
-
-# 4. Initialize Alfred
+# 3. Initialize Alfred
 alfred = CodeAgent(
-    tools=[NyraTool(model=nyra_model), mission_logger],  # Added logger here
+    tools=[
+        NyraTool(model=nyra_model),
+        mission_logger,
+        file_reader,
+    ],
     model=alfred_model,
-    max_steps=5,  # Slightly more steps to allow for logging
+    max_steps=6,  # Tightened to prevent runaway VRAM loops
     verbosity_level=1,
 )
 
-# Hardened Injection: explicitly forbidding markdown code blocks
+# 4. Final Hardened Logic Prompt
 alfred.prompt_templates[
     "system_prompt"
-] = """You are Alfred, the Master of the Batcave.
-RULES:
-1. NEVER "simulate" or "fabricate" data. 
-2. If you need to know what is in a file, you MUST use a tool to read it.
-3. If you need web data, you MUST call a search tool.
-4. Your `final_answer` must only contain data retrieved during the `Thought` steps.
-5. If a tool fails, report the error; do not make up a success.
+] = """You are Alfred, the Batcave's Chief Systems Agent.
+Rule 1: Use ONLY the raw <code> tag. No classes, no attributes.
+Rule 2: Thoughts first, then the <code> block.
+Rule 3: Use the exact tool arguments provided below.
 
-ALWAYS use <code> blocks for actions.
+Available Tools:
+- file_reader(filepath="path/to/file")
+- nyra_worker(task="description of research")
+- mission_logger(title="Entry Title", content="Entry Details")
+
+Example:
+Thoughts: I need to record our progress.
+<code>
+print(mission_logger(title="Status Update", content="All systems nominal."))
+</code>
 """
 
 if __name__ == "__main__":
-    mission = "Read the mission history log, summarize our progress so far, and then search the web for the latest updates on 'Smolagents' to see if there are any new features we should add to Nyra."
+    mission = (
+        "1. Read 'batcave_logs/mission_history.md' to see our progress. "
+        "2. Based on that file, summarize what Nyra's core is built on. "
+        "3. Log a new entry titled 'System Recovery' confirming you have successfully restored file access. "
+        "4. Give a final answer with the summary."
+    )
     print(f"--- Batcave Initializing ---")
-    # We use .run() to start the cycle
     print(alfred.run(mission))
