@@ -1,10 +1,43 @@
-# 🤖 HF Agents Workspace  
-**Project:** hf_agents  
-**Frameworks:** smolagents, LiteLLMModel  
-**Focus:** Tool‑using agents, code execution, and Hugging Face’s agent architecture  
+🤖 HF Agents Workspace: The Batcave
 
-This repository contains my full workspace for the Hugging Face Agents Course — including Alfred, my smolagents‑powered agent, along with exercises, experiments, and notebooks that explore tool calling, agent loops, and code‑interpreter workflows.
+Project: hf_agents
 
+Frameworks: smolagents, LiteLLM, LlamaIndex
+
+Core Agents: Alfred (Orchestrator) & Nyra (Technical Specialist)
+
+---
+🌌 Project Overview
+
+This repository serves as my primary development environment for the Hugging Face AI Agents Course. It features a local-first architecture designed to explore:
+
+    Tool-Calling Loops: High-precision code execution and task delegation.
+
+    Multi-Agent Systems: Supervisor/Worker patterns using Gemma 3 and Qwen 2.5.
+
+    Local RAG: Private document indexing and retrieval via LlamaIndex.
+---
+
+---
+
+⚡ The Beast: Local Compute Environment
+
+All agent inference and code execution are performed locally on The Beast, an HP Omen 35L optimized for Large Language Model (LLM) workloads.
+
+| Component | Specification | AI Impact |
+| :--- | :--- | :--- |
+| Processor | Intel i7-14700F (20 Cores) | Rapid pre-processing and script execution. |
+| GPU | NVIDIA RTX 4070 Super (12GB) | Local 4-bit/8-bit quantization support. |
+| RAM | 64GB DDR5 | High-capacity context window and RAG. |
+
+📈 Performance Benchmarks
+
+    Stable VRAM Ceiling: ~10.1 GB (Alfred + Nyra + Vector Store).
+
+    Quantization: Optimized for GGUF and EXL2 formats via Ollama and LiteLLM.
+
+    Inference Speed: Average 40-60 tokens/sec on 7B-12B parameter models.
+---
 ---
 
 ## 🚀 Purpose
@@ -31,18 +64,35 @@ The repository follows a clean, modular layout:
 
 ```text
 hf_agents/
-│
-├── alfred/
-│   ├── alfred_agent.py        # Main smolagents-based agent
-│   ├── smol_alfred.py         # Unit 2.1 experiment (HF course)
-│   ├── smol_test.py           # Test harness for agent loop
-│   └── batcave_intrusion_report.txt   # Example output artifact
-│
-├── exercises/                 # Course exercises and experiments
-│
-├── notebooks/                 # Jupyter notebooks for exploration
-│
+├── alfred
+│   ├── alfred_agent.py
+│   ├── batcave_logs
+│   │   ├── batcave_intrusion_report.txt
+│   │   ├── gpu_telemetry.csv
+│   │   ├── mission_history.md
+│   │   └── nyra_architecture_summary.txt
+│   ├── models
+│   ├── run_alfred.py
+│   ├── smol_alfred.py
+│   ├── smol_test.py
+│   ├── storage
+│   │   ├── default__vector_store.json
+│   │   ├── docstore.json
+│   │   ├── graph_store.json
+│   │   ├── image__vector_store.json
+│   │   └── index_store.json
+│   └── tools
+│       ├── log_tool.py
+│       ├── memory_tool.py
+│       ├── __pycache__
+│       │   ├── log_tool.cpython-312.pyc
+│       │   ├── memory_tool.cpython-312.pyc
+│       │   └── reader_tool.cpython-312.pyc
+│       └── reader_tool.py
+├── exercises
+├── notebooks
 └── README.md
+
 ```
 
 
