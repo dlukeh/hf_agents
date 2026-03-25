@@ -32,17 +32,35 @@ The repository follows a clean, modular layout:
 ```text
 hf_agents/
 │
-├── alfred/
-│   ├── alfred_agent.py        # Main smolagents-based agent
-│   ├── smol_alfred.py         # Unit 2.1 experiment (HF course)
-│   ├── smol_test.py           # Test harness for agent loop
-│   └── batcave_intrusion_report.txt   # Example output artifact
-│
-├── exercises/                 # Course exercises and experiments
-│
-├── notebooks/                 # Jupyter notebooks for exploration
-│
+├── alfred
+│   ├── alfred_agent.py
+│   ├── batcave_logs
+│   │   ├── batcave_intrusion_report.txt
+│   │   ├── gpu_telemetry.csv
+│   │   ├── mission_history.md
+│   │   └── nyra_architecture_summary.txt
+│   ├── models
+│   ├── run_alfred.py
+│   ├── smol_alfred.py
+│   ├── smol_test.py
+│   ├── storage
+│   │   ├── default__vector_store.json
+│   │   ├── docstore.json
+│   │   ├── graph_store.json
+│   │   ├── image__vector_store.json
+│   │   └── index_store.json
+│   └── tools
+│       ├── log_tool.py
+│       ├── memory_tool.py
+│       ├── __pycache__
+│       │   ├── log_tool.cpython-312.pyc
+│       │   ├── memory_tool.cpython-312.pyc
+│       │   └── reader_tool.cpython-312.pyc
+│       └── reader_tool.py
+├── exercises
+├── notebooks
 └── README.md
+
 ```
 
 
